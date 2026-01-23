@@ -1,5 +1,8 @@
+import java.util.Scanner;
+
 public class Eve {
     public static void main(String[] args) {
+
         String logo =  " _____             _____ \n"
                     + "| ____|  \\     /  | ____|\n"
                     + "|  _|     \\   /   |  _|  \n"
@@ -10,7 +13,24 @@ public class Eve {
         System.out.println("How may I be of assistance today?");
         System.out.println("__________________________________\n");
 
-        System.out.println("Goodbye. Have a nice day!");
-        System.out.println("__________________________________");
-}
+
+        Scanner sc = new Scanner(System.in);
+        
+        while (true) {
+            String userInput = sc.nextLine().trim();
+            System.out.println("__________________________________\n");
+
+            switch (userInput.toLowerCase()){
+            case "bye":
+                System.out.println("Goodbye. Have a nice day!");
+                System.out.println("__________________________________\n");
+                sc.close();
+                return;
+            default:
+                System.out.println(userInput);
+                System.out.println("__________________________________\n");
+                break;
+            }
+        }
+    }
 }
