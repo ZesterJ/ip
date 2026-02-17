@@ -31,7 +31,7 @@ public class Eve {
 
         ArrayList<Task> taskList = new ArrayList<>();
         loadTasks(taskList);
-      
+
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -42,147 +42,156 @@ public class Eve {
                 System.out.println("__________________________________\n");
 
                 switch (command) {
-                    case "bye":
-                        System.out.println("Goodbye. Have a nice day!");
-                        System.out.println("__________________________________\n");
-                        sc.close();
-                        return;
+                case "bye":
+                    System.out.println("Goodbye. Have a nice day!");
+                    System.out.println("__________________________________\n");
+                    sc.close();
+                    return;
 
-                    case "list":
-                        if (taskList.isEmpty()) {
-                            System.out.println("Your Task List is empty.");
-                            break;
-                        } else {
-                            System.out.println("Here are the tasks in your list:");
-                            for (int i = 0; i < taskList.size(); i += 1) {
-                                System.out.println((i + 1) + ". " + taskList.get(i).toString());
-                            }
-                            System.out.println("__________________________________\n");
-                        }
+                case "list":
+                    if (taskList.isEmpty()) {
+                        System.out.println("Your Task List is empty.");
                         break;
-
-                    case "mark":
-                        if (inputParts.length < 2) {
-                            throw new EveException("Please specify which task number to mark.");
+                    } else {
+                        System.out.println("Here are the tasks in your list:");
+                        for (int i = 0; i < taskList.size(); i += 1) {
+                            System.out.println((i + 1) + ". " + taskList.get(i).toString());
                         }
-
-                        int index = Integer.parseInt(inputParts[1]) - 1;
-                        if (index < 0 || index >= taskList.size()) {
-                            throw new EveException("The task number you provided is out of range.");
-                        }
-                        taskList.get(index).markAsDone();
-                        System.out.println("Nice! I've marked this task as done:");
-                        System.out.println(taskList.get(index).toString());
                         System.out.println("__________________________________\n");
-                        saveTasks(taskList);
-                        break;
+                    }
+                    break;
 
-                    case "unmark":
-                        if (inputParts.length < 2) {
-                            throw new EveException("Please specify which task number to unmark.");
-                        }
+                case "mark":
+                    if (inputParts.length < 2) {
+                        throw new EveException("Please specify which task number to mark.");
+                    }
 
-                        int unmarkIndex = Integer.parseInt(inputParts[1]) - 1;
+                    int index = Integer.parseInt(inputParts[1]) - 1;
+                    if (index < 0 || index >= taskList.size()) {
+                        throw new EveException("The task number you provided is out of range.");
+                    }
+                    taskList.get(index).markAsDone();
+                    System.out.println("Nice! I've marked this task as done:");
+                    System.out.println(taskList.get(index).toString());
+                    System.out.println("__________________________________\n");
+                    saveTasks(taskList);
+                    break;
 
-                        if (unmarkIndex < 0 || unmarkIndex >= taskList.size()) {
-                            throw new EveException("The task number you provided is out of range.");
-                        }
-                        taskList.get(unmarkIndex).markAsNotDone();
-                        System.out.println("The following task will be marked as undone:");
-                        System.out.println(taskList.get(unmarkIndex).toString());
-                        System.out.println("__________________________________\n");
-                        saveTasks(taskList);
-                        break;
+                case "unmark":
+                    if (inputParts.length < 2) {
+                        throw new EveException("Please specify which task number to unmark.");
+                    }
 
-                    case "delete":
-                        if (inputParts.length < 2) {
-                            throw new EveException("Please specify which task number to delete.");
-                        }
+                    int unmarkIndex = Integer.parseInt(inputParts[1]) - 1;
 
-                        int deleteIndex = Integer.parseInt(inputParts[1]) - 1;
-                        if (deleteIndex < 0 || deleteIndex >= taskList.size()) {
-                            throw new EveException("The task number you provided is out of range.");
-                        }
+                    if (unmarkIndex < 0 || unmarkIndex >= taskList.size()) {
+                        throw new EveException("The task number you provided is out of range.");
+                    }
+                    taskList.get(unmarkIndex).markAsNotDone();
+                    System.out.println("The following task will be marked as undone:");
+                    System.out.println(taskList.get(unmarkIndex).toString());
+                    System.out.println("__________________________________\n");
+                    saveTasks(taskList);
+                    break;
 
-                        Task removedTask = taskList.remove(deleteIndex);
-                        System.out.println("Noted. I've removed this task:");
-                        System.out.println(removedTask.toString());
-                        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
-                        System.out.println("__________________________________\n");
-                        saveTasks(taskList);
-                        break;
+                case "delete":
+                    if (inputParts.length < 2) {
+                        throw new EveException("Please specify which task number to delete.");
+                    }
 
-                    case "todo":
-                        if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
-                            throw new MissingDescriptionException("todo");
-                        }
+                    int deleteIndex = Integer.parseInt(inputParts[1]) - 1;
+                    if (deleteIndex < 0 || deleteIndex >= taskList.size()) {
+                        throw new EveException("The task number you provided is out of range.");
+                    }
 
-                        String todoDescription = inputParts[1];
-                        taskList.add(new ToDo(todoDescription));
-                        System.out.println("Got it. I have added this task:");
-                        System.out.println(taskList.get(taskList.size() - 1).toString());
-                        System.out.println("__________________________________\n");
-                        saveTasks(taskList);
-                        break;
+                    Task removedTask = taskList.remove(deleteIndex);
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println(removedTask.toString());
+                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                    System.out.println("__________________________________\n");
+                    saveTasks(taskList);
+                    break;
 
-                    case "deadline":
-                        if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
-                            throw new MissingDescriptionException("deadline");
-                        }
+                case "todo":
+                    if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
+                        throw new MissingDescriptionException("todo");
+                    }
 
-                        String[] deadlinesParam = inputParts[1].split("/", 2);
-                        taskList.add(new Deadline(deadlinesParam[0], deadlinesParam[1]));
-                        System.out.println("Got it. I have added this task:");
-                        System.out.println(taskList.get(taskList.size() - 1).toString());
-                        System.out.println("__________________________________\n");
-                        saveTasks(taskList);
-                        break;
+                    String todoDescription = inputParts[1];
+                    taskList.add(new ToDo(todoDescription));
+                    System.out.println("Got it. I have added this task:");
+                    System.out.println(taskList.get(taskList.size() - 1).toString());
+                    System.out.println("__________________________________\n");
+                    saveTasks(taskList);
+                    break;
 
-                    case "event":
-                        if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
-                            throw new MissingDescriptionException("event");
-                        }
+                case "deadline":
+                    if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
+                        throw new MissingDescriptionException("deadline");
+                    }
 
-                        String[] eventsParam = inputParts[1].split("/", 3);
-                        taskList.add(new Event(eventsParam[0], eventsParam[1], eventsParam[2]));
-                        System.out.println("Got it. I have added this task:");
-                        System.out.println(taskList.get(taskList.size() - 1).toString());
-                        System.out.println("__________________________________\n");
-                        saveTasks(taskList);
-                        break;
+                    String[] deadlinesParam = inputParts[1].split("/", 2);
+                    taskList.add(new Deadline(deadlinesParam[0], deadlinesParam[1]));
+                    System.out.println("Got it. I have added this task:");
+                    System.out.println(taskList.get(taskList.size() - 1).toString());
+                    System.out.println("__________________________________\n");
+                    saveTasks(taskList);
+                    break;
 
-                    default:
-                        throw new UnknownCommandException();
-                }
-            } catch (EveException e) {
-                System.out.println("⚠️  " + e.getMessage());
-                System.out.println("__________________________________\n");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println(
-                        "EVE ERROR: It seems like some information is missing. Please check your command and try again.");
-                System.out.println("__________________________________\n");
-            } catch (NumberFormatException e) {
-                System.out.println("EVE ERROR: Please enter a valid task number.");
-                System.out.println("__________________________________\n");
+                case "event":
+                    if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
+                        throw new MissingDescriptionException("event");
+                    }
+
+                    String[] eventsParam = inputParts[1].split("/", 3);
+                    taskList.add(new Event(eventsParam[0], eventsParam[1], eventsParam[2]));
+                    System.out.println("Got it. I have added this task:");
+                    System.out.println(taskList.get(taskList.size() - 1).toString());
+                    System.out.println("__________________________________\n");
+                    saveTasks(taskList);
+                    break;
+
+                default:
+                    throw new UnknownCommandException();
             }
+        } catch (EveException e) {
+            System.out.println("⚠️  " + e.getMessage());
+            System.out.println("__________________________________\n");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("EVE ERROR: It seems like some information is missing. Please check your command and try again.");
+            System.out.println("__________________________________\n");
+        } catch (NumberFormatException e) {
+            System.out.println("EVE ERROR: Please enter a valid task number.");
+            System.out.println("__________________________________\n");
+        }
         }
     }
 
-    private static int loadTasks(ArrayList<Task> list) {
-      File file = new File(FILE_PATH);
-       if (!file.exists()) return;
+    private static void loadTasks(ArrayList<Task> list) {
+        File file = new File(FILE_PATH);
+        if (!file.exists()){
+            return;
+        }
 
-       try (Scanner s = new Scanner(file)) {
-         while (s.hasNext()) {
-           String[] p = s.nextLine().split(" \\| ");
-           Task t = null;
+        try (Scanner s = new Scanner(file)) {
+            while (s.hasNext()) {
+                String[] p = s.nextLine().split(" \\| ");
+                Task t = null;
                 switch (p[0]) {
-                    case "T": t = new ToDo(p[2]); break;
-                    case "D": t = new Deadline(p[2], p[3]); break;
-                    case "E": t = new Event(p[2], p[3], p[4]); break;
+                case "T":
+                    t = new ToDo(p[2]);
+                    break;
+                case "D":
+                    t = new Deadline(p[2], p[3]);
+                    break;
+                case "E":
+                    t = new Event(p[2], p[3], p[4]);
+                    break;
                 }
+                
                 if (t != null) {
-                    if (p[1].equals("1")) t.markAsDone();
+                    if (p[1].equals("1"))
+                        t.markAsDone();
                     list.add(t);
                 }
             }
