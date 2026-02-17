@@ -1,4 +1,8 @@
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import tasks.Deadline;
@@ -11,6 +15,8 @@ import exceptions.MissingDescriptionException;
 import exceptions.UnknownCommandException;
 
 public class Eve {
+    private static final String FILE_PATH = "./data.eve.txt";
+
     public static void main(String[] args) {
 
         String logo = " _____             _____ \n"
@@ -24,6 +30,8 @@ public class Eve {
         System.out.println("__________________________________\n");
 
         ArrayList<Task> taskList = new ArrayList<>();
+        loadTasks(taskList);
+      
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -66,6 +74,7 @@ public class Eve {
                         System.out.println("Nice! I've marked this task as done:");
                         System.out.println(taskList.get(index).toString());
                         System.out.println("__________________________________\n");
+                        saveTasks(tasks, taskCount);
                         break;
 
                     case "unmark":
@@ -99,6 +108,7 @@ public class Eve {
                         System.out.println(removedTask.toString());
                         System.out.println("Now you have " + taskList.size() + " tasks in the list.");
                         System.out.println("__________________________________\n");
+                        saveTasks(tasks, taskCount);
                         break;
 
                     case "todo":
@@ -111,6 +121,7 @@ public class Eve {
                         System.out.println("Got it. I have added this task:");
                         System.out.println(taskList.get(taskList.size() - 1).toString());
                         System.out.println("__________________________________\n");
+                        saveTasks(taskList);
                         break;
 
                     case "deadline":
@@ -123,6 +134,7 @@ public class Eve {
                         System.out.println("Got it. I have added this task:");
                         System.out.println(taskList.get(taskList.size() - 1).toString());
                         System.out.println("__________________________________\n");
+                        saveTasks(taskList);
                         break;
 
                     case "event":
@@ -135,6 +147,7 @@ public class Eve {
                         System.out.println("Got it. I have added this task:");
                         System.out.println(taskList.get(taskList.size() - 1).toString());
                         System.out.println("__________________________________\n");
+                        saveTasks(taskList);
                         break;
 
                     default:
@@ -151,6 +164,43 @@ public class Eve {
                 System.out.println("EVE ERROR: Please enter a valid task number.");
                 System.out.println("__________________________________\n");
             }
+        }
+    }
+
+    private static int loadTasks(ArrayList<Task> list) {
+      File file = new File(FILE_PATH);
+       if (!file.exists()) return;
+
+       try (Scanner s = new Scanner(file)) {
+         while (s.hasNext()) {
+           String[] p = s.nextLine().split(" \\| ");
+           Task t = null;
+                switch (p[0]) {
+                    case "T": t = new ToDo(p[2]); break;
+                    case "D": t = new Deadline(p[2], p[3]); break;
+                    case "E": t = new Event(p[2], p[3], p[4]); break;
+                }
+                if (t != null) {
+                    if (p[1].equals("1")) t.markAsDone();
+                    list.add(t);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("⚠️ Warning: Data file corrupted.");
+        }
+    }
+
+    private static void saveTasks(ArrayList<Task> list) {
+        try {
+            File file = new File(FILE_PATH);
+            file.getParentFile().mkdirs();
+            FileWriter fw = new FileWriter(file);
+            for (Task t : list) {
+                fw.write(t.toFileFormat() + System.lineSeparator());
+            }
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("⚠️ Error saving data.");
         }
     }
 }

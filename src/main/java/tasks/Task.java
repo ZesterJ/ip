@@ -21,6 +21,11 @@ public class Task {
         this.isDone = false;
     }
 
+    public String toFileFormat() {
+        // Returns "1 | description" if done, "0 | description" if not done
+        return (isDone ? "1" : "0") + " | " + description;
+    }
+
     @Override
     public String toString() {
         String done;
