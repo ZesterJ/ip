@@ -74,7 +74,7 @@ public class Eve {
                         System.out.println("Nice! I've marked this task as done:");
                         System.out.println(taskList.get(index).toString());
                         System.out.println("__________________________________\n");
-                        saveTasks(tasks, taskCount);
+                        saveTasks(taskList);
                         break;
 
                     case "unmark":
@@ -91,6 +91,7 @@ public class Eve {
                         System.out.println("The following task will be marked as undone:");
                         System.out.println(taskList.get(unmarkIndex).toString());
                         System.out.println("__________________________________\n");
+                        saveTasks(taskList);
                         break;
 
                     case "delete":
@@ -108,7 +109,7 @@ public class Eve {
                         System.out.println(removedTask.toString());
                         System.out.println("Now you have " + taskList.size() + " tasks in the list.");
                         System.out.println("__________________________________\n");
-                        saveTasks(tasks, taskCount);
+                        saveTasks(taskList);
                         break;
 
                     case "todo":
