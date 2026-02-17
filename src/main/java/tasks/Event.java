@@ -11,6 +11,11 @@ public class Event extends Task {
     }
 
     @Override
+    public String toFileFormat() {
+        return "E | " + super.toFileFormat() + " | " + startBy + " | " + endBy;
+    }
+
+    @Override
     public String toString() {
         return "[E]" + super.toString() + "(from: " + startBy + " to: " + endBy + ")";
     }
