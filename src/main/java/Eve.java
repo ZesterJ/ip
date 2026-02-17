@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import tasks.Deadline;
 import tasks.Event;
@@ -28,8 +29,9 @@ public class Eve {
         System.out.println("How may I be of assistance today?");
         System.out.println("__________________________________\n");
 
-        Task[] tasks = new Task[100];
-        int taskCount = loadTasks(tasks);
+        ArrayList<Task> taskList = new ArrayList<>();
+        loadTasks(taskList);
+      
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -47,13 +49,13 @@ public class Eve {
                         return;
 
                     case "list":
-                        if (taskCount == 0) {
+                        if (taskList.isEmpty()) {
                             System.out.println("Your Task List is empty.");
                             break;
                         } else {
                             System.out.println("Here are the tasks in your list:");
-                            for (int i = 0; i < taskCount; i += 1) {
-                                System.out.println((i + 1) + ". " + tasks[i].toString());
+                            for (int i = 0; i < taskList.size(); i += 1) {
+                                System.out.println((i + 1) + ". " + taskList.get(i).toString());
                             }
                             System.out.println("__________________________________\n");
                         }
@@ -65,12 +67,12 @@ public class Eve {
                         }
 
                         int index = Integer.parseInt(inputParts[1]) - 1;
-                        if (index < 0 || index >= taskCount) {
+                        if (index < 0 || index >= taskList.size()) {
                             throw new EveException("The task number you provided is out of range.");
                         }
-                        tasks[index].markAsDone();
+                        taskList.get(index).markAsDone();
                         System.out.println("Nice! I've marked this task as done:");
-                        System.out.println(tasks[index].toString());
+                        System.out.println(taskList.get(index).toString());
                         System.out.println("__________________________________\n");
                         saveTasks(tasks, taskCount);
                         break;
@@ -79,13 +81,32 @@ public class Eve {
                         if (inputParts.length < 2) {
                             throw new EveException("Please specify which task number to unmark.");
                         }
+
                         int unmarkIndex = Integer.parseInt(inputParts[1]) - 1;
-                        if (unmarkIndex < 0 || unmarkIndex >= taskCount) {
+
+                        if (unmarkIndex < 0 || unmarkIndex >= taskList.size()) {
                             throw new EveException("The task number you provided is out of range.");
                         }
-                        tasks[unmarkIndex].markAsNotDone();
+                        taskList.get(unmarkIndex).markAsNotDone();
                         System.out.println("The following task will be marked as undone:");
-                        System.out.println(tasks[unmarkIndex].toString());
+                        System.out.println(taskList.get(unmarkIndex).toString());
+                        System.out.println("__________________________________\n");
+                        break;
+
+                    case "delete":
+                        if (inputParts.length < 2) {
+                            throw new EveException("Please specify which task number to delete.");
+                        }
+
+                        int deleteIndex = Integer.parseInt(inputParts[1]) - 1;
+                        if (deleteIndex < 0 || deleteIndex >= taskList.size()) {
+                            throw new EveException("The task number you provided is out of range.");
+                        }
+
+                        Task removedTask = taskList.remove(deleteIndex);
+                        System.out.println("Noted. I've removed this task:");
+                        System.out.println(removedTask.toString());
+                        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
                         System.out.println("__________________________________\n");
                         saveTasks(tasks, taskCount);
                         break;
@@ -96,12 +117,11 @@ public class Eve {
                         }
 
                         String todoDescription = inputParts[1];
-                        tasks[taskCount] = new ToDo(todoDescription);
+                        taskList.add(new ToDo(todoDescription));
                         System.out.println("Got it. I have added this task:");
-                        System.out.println(tasks[taskCount].toString());
+                        System.out.println(taskList.get(taskList.size() - 1).toString());
                         System.out.println("__________________________________\n");
-                        taskCount++;
-                        saveTasks(tasks, taskCount);
+                        saveTasks(taskList);
                         break;
 
                     case "deadline":
@@ -110,12 +130,11 @@ public class Eve {
                         }
 
                         String[] deadlinesParam = inputParts[1].split("/", 2);
-                        tasks[taskCount] = new Deadline(deadlinesParam[0], deadlinesParam[1]);
+                        taskList.add(new Deadline(deadlinesParam[0], deadlinesParam[1]));
                         System.out.println("Got it. I have added this task:");
-                        System.out.println(tasks[taskCount].toString());
+                        System.out.println(taskList.get(taskList.size() - 1).toString());
                         System.out.println("__________________________________\n");
-                        taskCount++;
-                        saveTasks(tasks, taskCount);
+                        saveTasks(taskList);
                         break;
 
                     case "event":
@@ -124,12 +143,11 @@ public class Eve {
                         }
 
                         String[] eventsParam = inputParts[1].split("/", 3);
-                        tasks[taskCount] = new Event(eventsParam[0], eventsParam[1], eventsParam[2]);
+                        taskList.add(new Event(eventsParam[0], eventsParam[1], eventsParam[2]));
                         System.out.println("Got it. I have added this task:");
-                        System.out.println(tasks[taskCount].toString());
+                        System.out.println(taskList.get(taskList.size() - 1).toString());
                         System.out.println("__________________________________\n");
-                        taskCount++;
-                        saveTasks(tasks, taskCount);
+                        saveTasks(taskList);
                         break;
 
                     default:
@@ -149,67 +167,40 @@ public class Eve {
         }
     }
 
-    private static int loadTasks(Task[] tasks) {
-        int count = 0;
-        File file = new File(FILE_PATH);
+    private static int loadTasks(ArrayList<Task> list) {
+      File file = new File(FILE_PATH);
+       if (!file.exists()) return;
 
-        if (!file.exists()) {
-            return 0;
-        }
-
-        try (Scanner fileScanner = new Scanner(file)) {
-            while (fileScanner.hasNext()) {
-                String line = fileScanner.nextLine();
-                String[] parts = line.split(" \\| ");
-
-                String type = parts[0];
-                boolean isDone = parts[1].equals("1");
-                String description = parts[2];
-
-                Task task = null;
-                switch (type) {
-                    case "T":
-                        task = new ToDo(description);
-                        break;
-                    case "D":
-                        task = new Deadline(description, parts[3]);
-                        break;
-                    case "E":
-                        task = new Event(description, parts[3], parts[4]);
-                        break;
+       try (Scanner s = new Scanner(file)) {
+         while (s.hasNext()) {
+           String[] p = s.nextLine().split(" \\| ");
+           Task t = null;
+                switch (p[0]) {
+                    case "T": t = new ToDo(p[2]); break;
+                    case "D": t = new Deadline(p[2], p[3]); break;
+                    case "E": t = new Event(p[2], p[3], p[4]); break;
                 }
-
-                if (task != null) {
-                    if (isDone)
-                        task.markAsDone();
-                    tasks[count] = task;
-                    count++;
+                if (t != null) {
+                    if (p[1].equals("1")) t.markAsDone();
+                    list.add(t);
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("No existing data found.");
         } catch (Exception e) {
-            System.out.println("⚠️ Warning: Data file corrupted. Starting fresh.");
+            System.out.println("⚠️ Warning: Data file corrupted.");
         }
-        return count;
     }
 
-    private static void saveTasks(Task[] tasks, int taskCount) {
+    private static void saveTasks(ArrayList<Task> list) {
         try {
             File file = new File(FILE_PATH);
-            File parentDir = file.getParentFile();
-
-            if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs();
+            file.getParentFile().mkdirs();
+            FileWriter fw = new FileWriter(file);
+            for (Task t : list) {
+                fw.write(t.toFileFormat() + System.lineSeparator());
             }
-
-            FileWriter writer = new FileWriter(file);
-            for (int i = 0; i < taskCount; i++) {
-                writer.write(tasks[i].toFileFormat() + System.lineSeparator());
-            }
-            writer.close();
+            fw.close();
         } catch (IOException e) {
-            System.out.println("⚠️ Error saving data: " + e.getMessage());
+            System.out.println("⚠️ Error saving data.");
         }
     }
 }
