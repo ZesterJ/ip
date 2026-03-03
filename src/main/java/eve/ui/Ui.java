@@ -1,5 +1,8 @@
 package eve.ui;
 
+import java.util.ArrayList;
+import eve.tasks.Task;
+
 public class Ui {
 
     public void printLine() {
@@ -52,6 +55,20 @@ public class Ui {
     public void printTaskUnmarked(Object task) {
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println("  " + task);
+        printLine();
+    }
+
+    public void showFindResults(ArrayList<Task> matchingTasks) {
+        printLine();
+        System.out.println("Here are the matching tasks in your list:");
+
+        if (matchingTasks.isEmpty()) {
+            System.out.println("No matching tasks found.");
+        } else {
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.println((i + 1) + "." + matchingTasks.get(i).toString());
+            }
+        }
         printLine();
     }
 }

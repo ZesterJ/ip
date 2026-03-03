@@ -10,6 +10,11 @@ public class Parser {
         String commandWord = inputParts[0].toLowerCase();
 
         switch (commandWord) {
+        case "find":
+            if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
+                throw new EveException("Please specify a keyword to find. Example: find book");
+            }
+            return new FindCommand(inputParts[1].trim());
         case "todo":
             if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
                 throw new MissingDescriptionException("todo");
