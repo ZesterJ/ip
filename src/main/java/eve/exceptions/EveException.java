@@ -1,4 +1,4 @@
-package exceptions;
+package eve.exceptions;
 
 public class EveException extends Exception {
     public EveException(String message) {

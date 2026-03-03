@@ -1,4 +1,4 @@
-package exceptions;
+package eve.exceptions;
 
 public class UnknownCommandException extends EveException {
     public UnknownCommandException() {

@@ -1,4 +1,4 @@
-package tasks;
+package eve.tasks;
 
 public class Event extends Task {
     public String startBy;

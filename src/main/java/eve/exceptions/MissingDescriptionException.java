@@ -1,4 +1,4 @@
-package exceptions;
+package eve.exceptions;
 
 public class MissingDescriptionException extends EveException {
     public MissingDescriptionException(String command) {
