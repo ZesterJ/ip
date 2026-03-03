@@ -1,30 +1,57 @@
-# Eve User Guide
+# Eve Task Manager - User Guide
 
-// Update the title above to match the actual product name
+**Eve** is a sleek, text-based chatbot designed to help you manage tasks with precision. Whether you are tracking daily chores, deadlines, or multi-day events, Eve keeps your schedule organized.
 
-// Product screenshot goes here
+---
 
-// Product intro goes here
+## Quick Start
+1. Ensure you have **Java 11** or above installed.
+2. Download the latest `.jar` file.
+3. Open a command terminal and run: `java -jar eve.jar`
+4. Type your commands into the prompt and press **Enter**.
 
-## Adding deadlines
+---
 
-// Describe the action and its outcome.
+## Features 
 
-// Give examples of usage
+### 1. Adding Tasks
+Eve supports three types of tasks. Note that dates must follow the `d-M-yyyy HHmm` format.
 
-Example: `keyword (optional arguments)`
+* **Todo:** A basic task without a date.
+  * Command: `todo <description>`
+* **Deadline:** A task that needs to be done by a specific time.
+  * Command: `deadline <description>/<date time>`
+  * Example: `deadline return book/2-12-2019 1800`
+* **Event:** A task with a start and end time.
+  * Command: `event <description>/<start time>/<end time>`
+  * Example: `event project meeting/20-12-2019 1400/20-12-2019 1600`
 
-// A description of the expected outcome goes here
+### 2. Viewing and Finding Tasks
+* **List all tasks:** `list`
+* **Find by keyword:** `find <keyword>` (e.g., `find book`)
 
-```
-expected output
-```
+### 3. Managing Task Status
+* **Mark as Done:** `mark <index>`
+* **Unmark:** `unmark <index>`
+* **Delete:** `delete <index>`
 
-## Feature ABC
+### 4. Exiting
+* **Exit:** `bye`
 
-// Feature details
+---
+
+## Command Summary
+
+| Action | Format |
+| :--- | :--- |
+| **Add Todo** | `todo <description>` |
+| **Add Deadline** | `deadline <desc>/d-M-yyyy HHmm` |
+| **Add Event** | `event <desc>/start/end` |
+| **List** | `list` |
+| **Find** | `find <keyword>` |
+| **Delete/Mark** | `<command> <index>` |
 
 
-## Feature XYZ
 
-// Feature details
+## Sample
+![Screenshot](screenshot.jpg)
