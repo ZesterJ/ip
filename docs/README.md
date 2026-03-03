@@ -5,9 +5,9 @@
 ---
 
 ## Quick Start
-1. Ensure you have **Java 11** or above installed.
+1. Ensure you have **Java 17** or above installed.
 2. Download the latest `.jar` file.
-3. Open a command terminal and run: `java -jar eve.jar`
+3. Open a command terminal and run: `java -jar ip.jar`
 4. Type your commands into the prompt and press **Enter**.
 
 ---
