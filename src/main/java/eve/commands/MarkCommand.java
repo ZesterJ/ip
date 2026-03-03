@@ -6,6 +6,9 @@ import eve.storage.Storage;
 import eve.tasks.Task;
 import eve.ui.Ui;
 
+/**
+ * Command to mark a task as done in the task list.
+ */
 public class MarkCommand extends Command {
 
     private final int index;

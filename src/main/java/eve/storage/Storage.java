@@ -10,6 +10,10 @@ import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Handles loading and saving of tasks to a file.
+ */
+
 public class Storage {
 
     private final String filePath;
@@ -19,6 +23,10 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads the {@code TaskList} from the hard disk. * @return The TaskList
+     * containing tasks from the storage file.
+     */
     public TaskList load() {
         TaskList list = new TaskList();
         File file = new File(filePath);
@@ -56,6 +64,11 @@ public class Storage {
         return list;
     }
 
+    /**
+     * Saves the given {@code TaskList} to the hard disk.
+     * 
+     * @param list The TaskList to be saved to the storage file.
+     */
     public void save(TaskList list) {
         try {
             File file = new File(filePath);

@@ -7,6 +7,9 @@ import eve.tasks.Task;
 import eve.ui.Ui;
 import java.time.LocalDateTime;
 
+/**
+ * Command to add a Deadline task to the task list.
+ */
 public class DeadlineCommand extends Command {
 
     private final String description;

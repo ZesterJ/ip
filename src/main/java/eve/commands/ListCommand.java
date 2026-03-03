@@ -4,6 +4,9 @@ import eve.model.TaskList;
 import eve.storage.Storage;
 import eve.ui.Ui;
 
+/**
+ * Command to list all tasks in the task list.
+ */
 public class ListCommand extends Command {
 
     @Override

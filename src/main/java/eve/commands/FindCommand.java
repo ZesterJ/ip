@@ -7,6 +7,9 @@ import eve.tasks.Task;
 import eve.ui.Ui;
 import java.util.ArrayList;
 
+/**
+ * Command to find tasks that match a given keyword.
+ */
 public class FindCommand extends Command {
     private String keyword;
 

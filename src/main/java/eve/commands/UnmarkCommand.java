@@ -6,6 +6,9 @@ import eve.storage.Storage;
 import eve.tasks.Task;
 import eve.ui.Ui;
 
+/**
+ * Command to unmark a task as not done.
+ */
 public class UnmarkCommand extends Command {
 
     private final int index;

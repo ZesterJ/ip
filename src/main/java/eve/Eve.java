@@ -10,6 +10,11 @@ import java.util.Scanner;
 
 import eve.exceptions.EveException;
 
+/**
+ * The main class for the Eve application. It initializes the application, loads
+ * tasks from storage, and handles user input in a loop until the user decides
+ * to exit.
+ */
 public class Eve {
     private static final String FILE_PATH = "./data.eve.txt";
     private static final Ui ui = new Ui();

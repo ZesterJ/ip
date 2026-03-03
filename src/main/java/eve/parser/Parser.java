@@ -6,8 +6,21 @@ import eve.exceptions.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Parses user input and converts it into commands for execution.
+ */
+
 public class Parser {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("d-M-yyyy HHmm");
+
+    /**
+     * Parses the user input and returns the corresponding Command object.
+     * 
+     * @param input The user input string.
+     * @return The Command object corresponding to the user input.
+     * @throws EveException If the command is unknown or if there are issues with
+     *                      the command format.
+     */
 
     public Command parse(String input) throws EveException {
         String[] inputParts = input.trim().split(" ", 2);

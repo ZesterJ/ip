@@ -3,6 +3,9 @@ package eve.ui;
 import java.util.ArrayList;
 import eve.tasks.Task;
 
+/**
+ * Handles all user interactions, including displaying messages and errors.
+ */
 public class Ui {
 
     public void printLine() {

@@ -6,6 +6,9 @@ import eve.tasks.Task;
 import eve.ui.Ui;
 import eve.exceptions.EveException;
 
+/**
+ * Command to delete a task from the task list.
+ */
 public class DeleteCommand extends Command {
 
     private final int index;
