@@ -7,10 +7,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Storage {
 
     private final String filePath;
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("d-M-yyyy HHmm");
 
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -29,15 +32,18 @@ public class Storage {
                 String[] p = s.nextLine().split(" \\| ");
                 Task t = null;
                 switch (p[0]) {
-                    case "T":
-                        t = new ToDo(p[2]);
-                        break;
-                    case "D":
-                        t = new Deadline(p[2], p[3]);
-                        break;
-                    case "E":
-                        t = new Event(p[2], p[3], p[4]);
-                        break;
+                case "T":
+                    t = new ToDo(p[2]);
+                    break;
+                case "D":
+                    LocalDateTime by = LocalDateTime.parse(p[3], DATE_FORMAT);
+                    t = new Deadline(p[2], by);
+                    break;
+                case "E":
+                    LocalDateTime from = LocalDateTime.parse(p[3], DATE_FORMAT);
+                    LocalDateTime to = LocalDateTime.parse(p[4], DATE_FORMAT);
+                    t = new Event(p[2], from, to);
+                    break;
                 }
                 if (t != null && p[1].equals("1")) {
                     t.markAsDone();

@@ -5,13 +5,14 @@ import eve.storage.Storage;
 import eve.tasks.Deadline;
 import eve.tasks.Task;
 import eve.ui.Ui;
+import java.time.LocalDateTime;
 
 public class DeadlineCommand extends Command {
 
     private final String description;
-    private final String by;
+    private final LocalDateTime by;
 
-    public DeadlineCommand(String description, String by) {
+    public DeadlineCommand(String description, LocalDateTime by) {
         this.description = description;
         this.by = by;
     }

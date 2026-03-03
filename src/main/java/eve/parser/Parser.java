@@ -3,7 +3,11 @@ package eve.parser;
 import eve.commands.*;
 import eve.exceptions.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Parser {
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("d-M-yyyy HHmm");
 
     public Command parse(String input) throws EveException {
         String[] inputParts = input.trim().split(" ", 2);
@@ -22,18 +26,23 @@ public class Parser {
             return new TodoCommand(inputParts[1].trim());
 
         case "deadline":
-            if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
-                throw new MissingDescriptionException("deadline");
+            try {
+                String[] dParts = inputParts[1].split("/", 2);
+                LocalDateTime by = LocalDateTime.parse(dParts[1].trim(), DATE_FORMAT);
+                return new DeadlineCommand(dParts[0].trim(), by);
+            } catch (Exception e) {
+                throw new EveException("Use format: deadline <desc>/d-M-yyyy HHmm");
             }
-            return new DeadlineCommand(inputParts[1].split("/", 2)[0].trim(), inputParts[1].split("/", 2)[1].trim());
 
         case "event":
-            if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
-                throw new MissingDescriptionException("event");
+            try {
+                String[] eParts = inputParts[1].split("/", 3);
+                LocalDateTime from = LocalDateTime.parse(eParts[1].trim(), DATE_FORMAT);
+                LocalDateTime to = LocalDateTime.parse(eParts[2].trim(), DATE_FORMAT);
+                return new EventCommand(eParts[0].trim(), from, to);
+            } catch (Exception e) {
+                throw new EveException("Use format: event <desc>/start/end (d-M-yyyy HHmm)");
             }
-            return new EventCommand(inputParts[1].split("/", 2)[0].trim(), inputParts[1].split("/", 2)[1].trim(),
-                    inputParts[1].split("/", 2)[2].trim());
-
         case "list":
             return new ListCommand();
 

@@ -1,23 +1,28 @@
 package eve.tasks;
 
-public class Event extends Task {
-    public String startBy;
-    public String endBy;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String description, String startBy, String endBy) {
+public class Event extends Task {
+    protected LocalDateTime from;
+    protected LocalDateTime to;
+    private static final DateTimeFormatter SAVE_FORMAT = DateTimeFormatter.ofPattern("d-M-yyyy HHmm");
+    private static final DateTimeFormatter PRINT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+
+    public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
-        this.startBy = startBy;
-        this.endBy = endBy;
+        this.from = from;
+        this.to = to;
     }
 
     @Override
     public String toFileFormat() {
-        return "E | " + super.toFileFormat() + " | " + startBy + " | " + endBy;
+        return "E | " + super.toFileFormat() + " | " + from.format(SAVE_FORMAT) + " | " + to.format(SAVE_FORMAT);
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + "(from: " + startBy + " to: " + endBy + ")";
+        return "[E]" + super.toString() + " (from: " + from.format(PRINT_FORMAT) + " to: " + to.format(PRINT_FORMAT)
+                + ")";
     }
-
 }
